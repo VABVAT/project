@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -10,8 +10,20 @@ async function texter() {
 }
 
 function App() {
+  const [text, setText] = useState('');
   const [count, setCount] = useState(0)
-  const txt = texter();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await texter();  // Wait for the async data
+        setText(result);                // Set the data in state
+      } catch (error) {
+        console.error('Error fetching text:', error);
+      }
+    };
+    fetchData(); // Call the function to fetch data
+      }, []);
+
   return (
     <>
       <div>
@@ -35,7 +47,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
       <div>
-        <h1>{txt}</h1>
+        <h1>{text}</h1>
       </div>
     </>
   )
